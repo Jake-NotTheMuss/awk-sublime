@@ -84,3 +84,18 @@ BEGIN {
   }
 
 }
+
+{
+  a = // / //;
+#     ^ punctuation.definition.regex.begin.awk
+#      ^ punctuation.definition.regex.end.awk
+#        ^ keyword.operator.arithmetic
+#          ^ punctuation.definition.regex.begin.awk
+#           ^ punctuation.definition.regex.end.awk
+  // ; //;
+# ^ punctuation.definition.regex.begin.awk
+#  ^ punctuation.definition.regex.end.awk
+#    ^ punctuation.terminator.awk
+#      ^ punctuation.definition.regex.begin.awk
+#       ^ punctuation.definition.regex.end.awk
+}
