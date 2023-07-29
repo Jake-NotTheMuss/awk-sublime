@@ -70,6 +70,7 @@ contexts:
     - include: comment
     - match: \s*$\n
       push:
+        - include: comment
         - match: (?=\S)
           pop: true
 
@@ -165,40 +166,13 @@ contexts:
       push: do-stat
     - include: simple_statement
 
-  delete-stat:
-    - match: '{{NAME}}'
-      scope: variable.other.readwrite.awk
-    - match: '\['
-      scope: punctuation.section.bracket.awk
-      set:
-        - match: '\]'
-          scope: punctuation.section.bracket.awk
-          pop: true
-        - include: expr_list
-    - match: (?=\S)
-      pop: true
-
-  print-stat:
-    - match: '\('
-      scope: punctuation.section.group.begin.awk
-      push:
-        - match: '\)'
-          scope: punctuation.section.group.end.awk
-          pop: true
-        - include: expr_list
-    - match: '>>?|\|'
-      scope: keyword.operator.assignment.redirection.awk
-    - include: expr
-    - match: (?=\S)
-      pop: true
-
   simple_statement:
     - match: \bdelete\b
       scope: keyword.control.awk
-      push: delete-stat
     - match: \bprintf?\b
       scope: keyword.control.awk
-      push: print-stat
+    - match: '>>?|\|'
+      scope: keyword.operator.assignment.redirection.awk
     - include: expr
 
   if-stat:
@@ -216,10 +190,10 @@ contexts:
     - include: newline_opt
     - match: (?=\{)
       set: action
-    - include: statement
     - match: ';'
       scope: punctuation.terminator.awk
       pop: true
+    - include: statement
     - match: (?=\S)
       pop: true
 
@@ -252,7 +226,7 @@ contexts:
       push:
         - match: '\)'
           scope: punctuation.section.group.end.awk
-          pop: true
+          set: infix
         - include: expr
     - match: (?:\+\+|--)
       scope: keyword.operator.arithmetic.awk
@@ -346,6 +320,8 @@ contexts:
             - match: (?=;|$)
               set: infix
             - include: expr
+        - match: $\n
+          set: infix
         - match: (?=\S)
           set: infix
 
@@ -374,6 +350,8 @@ contexts:
             - match: ','
               scope: punctuation.separator.index.awk
             - include: expr
+        - match: $\n
+          set: prefix-end
         - match: (?=\S)
           set: prefix-end
 
