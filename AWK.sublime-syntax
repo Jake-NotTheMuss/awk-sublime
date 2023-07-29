@@ -158,14 +158,8 @@ contexts:
     - include: statement
 
   terminatable_statement:
-    - match: \b(?:break|continue|next)\b
+    - match: \b(?:break|continue|exit|next|return)\b
       scope: keyword.control.awk
-    - match: \b(?:exit|return)\b
-      scope: keyword.control.awk
-      push:
-        - match: (?=;|$)
-          pop: true
-        - include: expr
     - match: \bdo\b
       scope: keyword.control.awk
       push: do-stat
